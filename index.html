@@ -49,13 +49,13 @@ label {margin-bottom: 5px;}
 
 .error {color: red}
 	&lt;/style&gt;
-	  &lt;label&gt; valid text 
+	  &lt;label&gt; invalid text 
 	    &lt;span class=&quot;error&quot;&gt;&lt;/span&gt; 
 	    &lt;input type=&quot;text&quot; required=&quot;true&quot; value=&quot;&quot;/&gt; 
 	    &lt;span&gt;Tested&lt;/span&gt;
 	  &lt;/label&gt;
 	  &lt;label&gt; 
-	    invalid text 
+	    valid text 
 	    &lt;span class=&quot;error&quot;&gt;&lt;/span&gt; 
 	    &lt;input type=&quot;text&quot; required=&quot;true&quot; value=&quot;not empty&quot;/&gt; 
 	    &lt;span&gt;Tested&lt;/span&gt;
@@ -85,7 +85,7 @@ label {margin-bottom: 5px;}
 
 	  &lt;script src=&quot;checkValidity.js&quot;&gt;&lt;/script&gt;
 	  &lt;script&gt;
-	  $(document).ready(function(){$(&apos;form, :input&apos;).checkValidity();});
+	  $(document).ready(function(){$(&apos;form, :input&apos;).checkValidity().checkValidity(&apos;trigger&apos;);});
 	  &lt;/script&gt;
       </textarea>	
     </article>

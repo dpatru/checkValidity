@@ -65,6 +65,7 @@ if (!('setISO8601' in Date))
      };
     
      function creditcard(v, type) {
+	 // tests if value is of a credit card type.
 	 // from http://www.regular-expressions.info/creditcard.html
 	 var types = {
 	     visa: /^4[0-9]{12}(?:[0-9]{3})?$/,
@@ -199,6 +200,9 @@ if (!('setISO8601' in Date))
  	     var opts = $.extend({}, defaultOptions, options||{});
 	     var events = $.map(opts.events.split(/\s+/), function(e){return e+'.checkValidity';}).join(' ');
 	     var m = opts.live? 'live': 'bind';
+	     // This is the main call. Note that there are two events being bound:  
+	     // 1) the events which trigger a validity check, and 
+	     // 2) the invalid/valid events are bound to the handler specifid in the options
 	     this[m](events, function(){checkValidity.validate.call(this); return false;})[m]('valid.checkValidity invalid.checkValidity', opts.handler);
 	     return this;
 	 },

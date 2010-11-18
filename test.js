@@ -20,6 +20,7 @@ $(document).ready(function testCheckValidity($){
       minHeight: '10'
     });
     function update_html(ed){
+      alert(editor.getCode());
       $('body', html_el.contentDocument).html(editor.getCode()); // set the content of the iframe
       $(html_el).height($(html_el).contents().find("html").height()); // set the height of the iframe dynamically.
       $('button.'+html_id).attr('disabled', true); // disable the update button because the iframe has already been updated.

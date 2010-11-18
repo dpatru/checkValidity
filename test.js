@@ -11,13 +11,12 @@ $(document).ready(function testCheckValidity($){
       stylesheet: ["codemirror/css/xmlcolors.css", "codemirror/css/jscolors.css", "codemirror/css/csscolors.css"],
       height:"dynamic",
       onChange: update_html,
-      onLoad: function(ed){alert(1); editor = ed; update_html();},
+      onLoad: update_html,
       iframeClass: 'source',
       minHeight: '10'
     });
     function update_html(ed){
 	if (ed) editor = ed;
-	window.alert('1');
       $('body', html_el.contentDocument).html(editor.getCode());
       var height = $(html_el).contents().find('html').height();
       $(html_el).height($(html_el).contents().find("html").height());

@@ -20,7 +20,6 @@ $(document).ready(function testCheckValidity($){
       minHeight: '10'
     });
     function update_html(){
-      alert(editor.getCode());
       var w = html_el.contentWindow;
       w.document.open();
       w.document.write(editor.getCode());

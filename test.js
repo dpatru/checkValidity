@@ -7,7 +7,7 @@ $(document).ready(function testCheckValidity($){
     var html_el = $('#'+html_id)[0];
     var editor = CodeMirror.fromTextArea(el, {
       parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js", "parsehtmlmixed.js"],
-      path: "https://github.com/marijnh/CodeMirror/raw/master/js/",
+      path: "codemirror/js/",
       stylesheet: ["https://github.com/marijnh/CodeMirror/raw/master/css/xmlcolors.css", "https://github.com/marijnh/CodeMirror/raw/master/css/jscolors.css", "https://github.com/marijnh/CodeMirror/raw/master/css/csscolors.css"],
       height:"dynamic",
       onChange: update_html,

@@ -8,7 +8,7 @@ $(document).ready(function testCheckValidity($){
     var editor = CodeMirror.fromTextArea(el, {
       parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js", "parsehtmlmixed.js"],
       path: "codemirror/js/",
-      stylesheet: ["https://github.com/marijnh/CodeMirror/raw/master/css/xmlcolors.css", "https://github.com/marijnh/CodeMirror/raw/master/css/jscolors.css", "https://github.com/marijnh/CodeMirror/raw/master/css/csscolors.css"],
+      stylesheet: ["codemirror/css/xmlcolors.css", "codemirror/css/jscolors.css", "codemirror/css/csscolors.css"],
       height:"dynamic",
       onChange: update_html,
       onLoad: function(ed){alert(1); editor = ed; update_html();},

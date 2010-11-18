@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Validation Tester</title>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="style.css"/>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.js"></script>
+    <script>!window.jQuery && document.write(unescape('%3Cscript src="jquery.js"%3E%3C/script%3E'))</script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js"></script>
+    <script>!window.jQuery && document.write(unescape('%3Cscript src="js/jquery-ui-1.8.6.custom.min.js"%3E%3C/script%3E'))</script>
+  <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/themes/base/jquery-ui.css">
+  <script>
+    function cssIsLoaded() {
+      var test = document.createElement("div");
+      test.className = "ui-helper-hidden";
+      return getComputedStyle(test, null).display === "none";
+    }
+    !cssIsLoaded() && document.write(unescape('%3Cstyle src="css/jquery-ui-1.8.6.custom.css"%3E%3C/style%3E'))
+  </script> 
+
+  <script src='https://github.com/dpatru/checkValidity/raw/master/checkValidity.js'></script>
+    <script src="codemirror/js/codemirror.js"></script>
+    <script src="test.js"></script>
+  </head>
+  <body>
+    <article>
+      <h1>checkValidity([options]) <span class="returns">Returns: <a href="http://docs.jquery.com/Types#jQuery">jQuery</a></span></h1>
+      <textarea class="eg">
+	&lt;style&gt;
+input.invalid {outline: 2px solid red;}
+input.invalid + span:after {content: &apos; invalid&apos;}
+input.valid + span:after {content: &apos; valid&apos;}
+
+input.invalid, textarea.invalid {
+  background-image: url(&quot;images/cross.png&quot;);
+}
+input.valid, textarea.valid {
+  background-image: url(images/accept.png);
+}
+input, textarea {
+  background-position: right top;
+  background-repeat: no-repeat;
+}
+
+label, input, textarea {display:block}
+label {margin-bottom: 5px;}
+
+.error {color: red}
+	&lt;/style&gt;
+	  &lt;label&gt; valid text 
+	    &lt;span class=&quot;error&quot;&gt;&lt;/span&gt; 
+	    &lt;input type=&quot;text&quot; required=&quot;true&quot; value=&quot;&quot;/&gt; 
+	    &lt;span&gt;Tested&lt;/span&gt;
+	  &lt;/label&gt;
+	  &lt;label&gt; 
+	    invalid text 
+	    &lt;span class=&quot;error&quot;&gt;&lt;/span&gt; 
+	    &lt;input type=&quot;text&quot; required=&quot;true&quot; value=&quot;not empty&quot;/&gt; 
+	    &lt;span&gt;Tested&lt;/span&gt;
+	  &lt;/label&gt;
+	  &lt;label&gt; number 
+	    &lt;span class=&quot;error&quot;&gt;&lt;/span&gt; 
+	    &lt;input type=&quot;number&quot; required=&quot;true&quot;/&gt; 
+	    &lt;span&gt;Tested&lt;/span&gt;
+	  &lt;/label&gt;
+	  &lt;label&gt; invalid number 
+	    &lt;span class=&quot;error&quot;&gt;&lt;/span&gt; 
+	    &lt;input type=&quot;number&quot; required=&quot;true&quot; value=&quot;not a number&quot;/&gt; 
+	    &lt;span&gt;Tested&lt;/span&gt;
+	    &lt;/label&gt;
+	  &lt;label&gt; url 
+	    &lt;span class=&quot;error&quot;&gt;&lt;/span&gt; 
+	    &lt;input type=&quot;url&quot; required=&quot;true&quot;/&gt; 
+	    &lt;span&gt;Tested&lt;/span&gt;
+	  &lt;/label&gt;
+	  &lt;label&gt; valid url 
+	    &lt;span class=&quot;error&quot;&gt;&lt;/span&gt; 
+	    &lt;input type=&quot;url&quot; required=&quot;true&quot; value=&quot;http://lewrockwell.com/&quot;/&gt; 
+	    &lt;span&gt;Tested&lt;/span&gt;
+	  &lt;/label&gt;
+	  &lt;label&gt; text &lt;span class=&quot;error&quot;&gt;&lt;/span&gt; &lt;input type=&quot;text&quot; required=&quot;true&quot;/&gt; &lt;span&gt;Tested&lt;/span&gt;&lt;/label&gt;
+
+	  &lt;script src=&quot;https://github.com/dpatru/checkValidity/raw/master/checkValidity.js&quot;&gt;&lt;/script&gt;
+      </textarea>	
+    </article>
+  </body>
+</html>
+

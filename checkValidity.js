@@ -39,14 +39,14 @@ if (!('setISO8601' in Date))
 
      // The difference between willValidate and checkValidity is that checkValidity fires invalid event on failure to validate.
 
-     function checkValidity( method, handler ) {
+     function checkValidity( method, valid, invalid ) {
 	 var methods = checkValidity.methods;
 	 if ($.isArray(method)) method = method.join(' '); // consolidate events in a string
 	 if ( typeof method == 'string') {
 	     if ( methods[method] ) 
 		 return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
 	     else {
-		 return methods.init.call( this, {events: method, handler: handler});
+		 return methods.init.call( this, {events: method, valid: valid, invalid: invalid});
 	     }
 	 } else if ( typeof method === 'object' || ! method ) {
 	     return methods.init.apply( this, arguments );
@@ -65,6 +65,7 @@ if (!('setISO8601' in Date))
      };
     
      function creditcard(v, type) {
+	 // tests if value is of a credit card type.
 	 // from http://www.regular-expressions.info/creditcard.html
 	 var types = {
 	     visa: /^4[0-9]{12}(?:[0-9]{3})?$/,
@@ -79,21 +80,34 @@ if (!('setISO8601' in Date))
 	 var re = (type in types)? types[type]: type.creditcard;
 	 return re.test(v);
      };
+     function defaultHandlerf(options){
+	 var defaultOpts = {validationMessage:undefined, preventDefault: false, addClass: '', removeClass: ''};
+	 var opts = $.extend({}, defaultOpts, options || {});
+	 return function(ev){
+	     var $this = $(this),
+                 $labels = $this.closest('label');
+	    if (this.id) $labels.add('label[for='+this.id+']');
+	    $this.add($labels).removeClass(opts.removeClass).addClass(opts.addClass);
+	    var cvopts = $this.data('checkValidity') || {},
+	        errorClass = cvopts.errorClass || checkValidity.defaultOptions.errorClass;
+	    $labels.find('.'+errorClass)
+		 .add($labels.filter('.'+errorClass))
+		 .html(opts.validationMessage==undefined? (this.validationMessage || ''): opts.validationMessage);
+	    if (opts.preventDefault) {
+		if (ev) ev.preventDefault();
+		return false;
+	    }
+	    return true;
+	 };
+     };
+	 
      var defaultOptions = checkValidity.defaultOptions = {
 	live: true, /* use .live to attach events */
-	events: 'change submit', /* events that trigger validity checks */
-	handler: function(ev) { /* handler to call on valid and invalid events */
-	    var addClass = ev.type == 'valid'? 'valid': 'invalid', 
-	        removeClass = ev.type == 'invalid'? 'valid': 'invalid',
-	        $this = $(this),
-                $labels = $this.closest('label');
-	    if (this.id) $labels.add('label[for='+this.id+']');
-	    $this.add($labels).removeClass(removeClass).addClass(addClass);
-	    var opts = $this.data('checkValidity') || {},
-	        errorClass = opts.errorClass || checkValidity.defaultOptions.errorClass;
-	    $labels.find('.'+errorClass).add($labels.filter('.'+errorClass)).html(this.validationMessage);
-	    return false;
-	},
+	validateEvents: 'change submit', /* events that trigger validity checks */
+	resetEvents: 'reset', /* events that trigger resets */
+	valid: defaultHandlerf({addClass: 'valid', removeClass: 'invalid reset', preventDefault: false}),
+	invalid: defaultHandlerf({addClass: 'invalid', removeClass: 'valid reset', preventDefault: true}),
+	reset: defaultHandlerf({addClass: 'reset', removeClass: 'valid invalid', preventDefault: false}),
 	errorClass: 'error',
 	setCustomError: function (value, el, errorMessages){
 	  var errs = [], k, validity = el.validity;
@@ -197,17 +211,29 @@ if (!('setISO8601' in Date))
 	 init : function( options ) {
 	     if (options) this.data('checkValidity', options); // set options
  	     var opts = $.extend({}, defaultOptions, options||{});
-	     var events = $.map(opts.events.split(/\s+/), function(e){return e+'.checkValidity';}).join(' ');
+	     var validateEvents = $.map(opts.validateEvents.split(/\s+/), function(e){return e+'.checkValidity';}).join(' ');
+	     var resetEvents = $.map(opts.resetEvents.split(/\s+/), function(e){return e+'.checkValidity';}).join(' ');
 	     var m = opts.live? 'live': 'bind';
-	     this[m](events, function(){checkValidity.validate.call(this); return false;})[m]('valid.checkValidity invalid.checkValidity', opts.handler);
+	     // This is the main call. Note that there are two events being bound:  
+	     // 1) the events which trigger a validity check, and 
+	     // 2) the invalid/valid events are bound to the handler specifid in the options
+	     this[m](validateEvents, function(){return checkValidity.validate.call(this);});
+	     this[m](resetEvents, function(){return checkValidity.reset.call(this);});
+	     this[m]('valid.checkValidity', opts.valid);
+	     this[m]('invalid.checkValidity', opts.invalid);
+	     this[m]('reset.checkValidity', opts.reset);
 	     return this;
 	 },
 	 destroy : function( ) {
 	     return this.each(function(){$(window).unbind('.checkValidity'); });
 	 },
-	 trigger : function( ) {
+	 validate : function( ) {
 	     this.each(function(){checkValidity.validate.call(this);});
 	     return this;
+	 },
+	 reset : function( ) {
+	     var args = Array.prototype.slice.call(arguments);
+	     return this.each(function(){checkValidity.reset.apply(this, args);});
 	 }
      };
 
@@ -250,6 +276,26 @@ if (!('setISO8601' in Date))
 	 return validity.valid;
      }; // end inputElementWillValidate
 
+     checkValidity.reset = function reset(cb){
+         var el = this;
+	 var me = arguments.callee;
+	 switch (el.nodeName.toLowerCase()){
+	 case 'form': 
+	     $.each(el.elements, function(i, x){me.call(x, cb);});
+	     break;
+	 case 'input':
+	 case 'textarea':
+	     if (cb) {
+		 el.data('checkValidity', $.extend(el.data('checkValidity') || {}, {reset: cb}));
+	     } else {
+		 var opts = $.extend({}, checkValidity.defaultOptions, $(el).data('checkValidity') || {});
+		 return opts.reset.call(this);
+	     }
+	 }
+	 return false;
+     };
+
+
      function trigger_event(el, v){
 	 $(el).trigger(v? 'valid': 'invalid');
      };
@@ -261,6 +307,7 @@ if (!('setISO8601' in Date))
 	 case 'form': 
 	     var r=true;
 	     $.each(el.elements, function(i, x){r &= me.call(x);});
+	     trigger_event(el, r);
 	     break;
 	 case 'input':
 	 case 'textarea':
@@ -280,11 +327,12 @@ if (!('setISO8601' in Date))
 	         cerror = opts.setCustomError($el.val(), el, opts.errorMessage);
 	     el.setCustomValidity(cerror||'');
 	     r = el.validity.valid;
+	     trigger_event(el, r);
 	     break;
 	 default: r = true; break;
 	 }
-	 trigger_event(el, r);
-	 return r;
+	 //alert('returning validation of '+el.nodeName+' = '+!!r);
+	 return !!r;
      };
 
 

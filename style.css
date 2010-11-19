@@ -24,16 +24,19 @@ body {
     font-family: 'Trebuchet MS', Verdana, Helvetica, Arial, sans-serif;
     padding:0;
     margin:0;
-    font-size: 10px;
+    font-size: 100%
 }
 
-article, h1 {display:block; padding: 5px 20px;}
-h1 {background: #0D5995; color: white; margin: 0 -20px 5px -20px; }
-h1 .returns {float:right; font-style: italic; }
-h1 a {color: white}
+header h1 {text-align: center;}
+article {max-width: 35em; margin: 0 auto;}
+pre {overflow: auto; display:block }
+article, article h1 {display:block; padding: 5px 20px;}
+article h1 {font-size:100%; background: #0D5995; color: white; margin: 0 -20px 5px -20px; }
+article h1 .returns {float:right; font-style: italic; }
+article h1 a {color: white}
 
-div.output, div.input {outline: 1px solid green;}
-div.output {outline-color: red}
+.CodeMirror-wrapping {outline: 1px solid green; padding: 1em;}
+.output {outline: 1px solid gray}
 
 .ui-tabs .ui-tabs-hide {
     position: absolute;

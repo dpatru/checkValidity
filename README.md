@@ -19,10 +19,12 @@ is 'invalid', the handler also fills in the .error element in the label for
 the element.
 
 CheckValidity can also be called with arguments for additional functionality.
-See the documentation.
+See the [documentation][3].
 
    [1]: http://www.w3.org/TR/html5/forms.html
 
    [2]: http://www.w3.org/TR/html5/association-of-controls-and-forms.html#dom-
 cva-validity
+
+   [3]: http://dpatru.github.com/checkValidity/
 

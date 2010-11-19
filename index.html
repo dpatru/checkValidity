@@ -30,6 +30,7 @@
 <p>
 Called with no arguments, checkValidity calls its init method. The init method binds two classes of events: events which should trigger validation and the events triggered by the validation process itself and the reset event. By default, the events triggering validation are 'change' and 'submit'. The validation process triggers an 'invalid' or 'valid' event depending on the result of the validation. By default, the event handlers for the 'invalid', 'valid', and 'reset' events set class names on the input element and its labels and populate any element in the label classed 'error' with the validation message.
 </p>
+<h2>Example: calling with default arguments.</h2>
 <p class="eg">
       <textarea class="eg">
 	&lt;style&gt;
@@ -79,6 +80,7 @@ $(document).ready(function(){
 <p>
 You can overide the default behavior by calling checkValidity with your own options. Note how the input element's class is not changed if the default handlers are overridden in the example below.
 </p>
+<h2>Example: Calling with custom event handlers.</h2>
 <p class='eg'>
       <textarea class="eg">
 	&lt;style&gt;

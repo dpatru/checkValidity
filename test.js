@@ -3,7 +3,7 @@ $(document).ready(function testCheckValidity($){
 
   $('textarea.eg').each(function codeMirrorize(i, el){
     var html_id = 'html'+i;
-    $(el).after('<button class="'+html_id+'">Update</button><br/><iframe src="javascript:;" id="'+html_id+'"></iframe>');
+    $(el).after('<button class="'+html_id+'">Reload html</button><br/><iframe class="output" src="javascript:;" height="0px" id="'+html_id+'"></iframe>');
     var html_el = $('#'+html_id)[0];
     var editor = CodeMirror.fromTextArea(el, {
       parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js", "parsehtmlmixed.js"],
@@ -19,13 +19,20 @@ $(document).ready(function testCheckValidity($){
       iframeClass: 'source',
       minHeight: '10'
     });
+    function setHeight(){
+      var height = $(html_el).contents().find('html').height();
+      $(html_el).height(height); // set the height of the iframe dynamically.
+    };
+    function setContent(c){
+	var w = html_el.contentWindow;
+        w.document.open();
+        w.document.write(c);
+        w.document.close();
+	setHeight();
+    };
     function update_html(){
-      var w = html_el.contentWindow;
-      w.document.open();
-      w.document.write(editor.getCode());
-      w.document.close();
-      //$('body', html_el.contentDocument).html(editor.getCode()); // set the content of the iframe
-      $(html_el).height($(html_el).contents().find("html").height()); // set the height of the iframe dynamically.
+      setContent('<!doctype html><head><title>Empty</title></head><div></div>');
+      setContent(editor.getCode());
       $('button.'+html_id).attr('disabled', true); // disable the update button because the iframe has already been updated.
     };
 

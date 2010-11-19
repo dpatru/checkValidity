@@ -24,15 +24,15 @@
     <script src="test.js"></script>
   </head>
   <body>
-    <h1>checkValidity html5</h1>
+    <header><h1>checkValidity html5</h1></header>
     <article>
       <h1>checkValidity([options]) <span class="returns">Returns: <a href="http://docs.jquery.com/Types#jQuery">jQuery</a></span></h1>
+<p>
+Called with no arguments, checkValidity calls its init method. The init method binds two classes of events: events which should trigger validation and the events triggered by the validation process itself and the reset event. By default, the events triggering validation are 'change' and 'submit'. The validation process triggers an 'invalid' or 'valid' event depending on the result of the validation. By default, the event handlers for the 'invalid', 'valid', and 'reset' events set class names on the input element and its labels and populate any element in the label classed 'error' with the validation message.
+</p>
+<p class="eg">
       <textarea class="eg">
 	&lt;style&gt;
-input.invalid {outline: 2px solid red;}
-input.invalid + span:after {content: &apos; invalid&apos;}
-input.valid + span:after {content: &apos; valid&apos;}
-
 input.invalid, textarea.invalid {
   background-image: url(&quot;images/cross.png&quot;);
 }
@@ -49,45 +49,224 @@ label {margin-bottom: 5px;}
 
 .error {color: red}
 	&lt;/style&gt;
-	  &lt;label&gt; invalid text 
-	    &lt;span class=&quot;error&quot;&gt;&lt;/span&gt; 
-	    &lt;input type=&quot;text&quot; required=&quot;true&quot; value=&quot;&quot;/&gt; 
-	    &lt;span&gt;Tested&lt;/span&gt;
-	  &lt;/label&gt;
-	  &lt;label&gt; 
-	    valid text 
-	    &lt;span class=&quot;error&quot;&gt;&lt;/span&gt; 
-	    &lt;input type=&quot;text&quot; required=&quot;true&quot; value=&quot;not empty&quot;/&gt; 
-	    &lt;span&gt;Tested&lt;/span&gt;
-	  &lt;/label&gt;
-	  &lt;label&gt; number 
-	    &lt;span class=&quot;error&quot;&gt;&lt;/span&gt; 
-	    &lt;input type=&quot;number&quot; required=&quot;true&quot;/&gt; 
-	    &lt;span&gt;Tested&lt;/span&gt;
-	  &lt;/label&gt;
-	  &lt;label&gt; invalid number 
-	    &lt;span class=&quot;error&quot;&gt;&lt;/span&gt; 
-	    &lt;input type=&quot;number&quot; required=&quot;true&quot; value=&quot;not a number&quot;/&gt; 
-	    &lt;span&gt;Tested&lt;/span&gt;
-	    &lt;/label&gt;
-	  &lt;label&gt; url 
-	    &lt;span class=&quot;error&quot;&gt;&lt;/span&gt; 
-	    &lt;input type=&quot;url&quot; required=&quot;true&quot;/&gt; 
-	    &lt;span&gt;Tested&lt;/span&gt;
-	  &lt;/label&gt;
-	  &lt;label&gt; valid url 
-	    &lt;span class=&quot;error&quot;&gt;&lt;/span&gt; 
-	    &lt;input type=&quot;url&quot; required=&quot;true&quot; value=&quot;http://lewrockwell.com/&quot;/&gt; 
-	    &lt;span&gt;Tested&lt;/span&gt;
-	  &lt;/label&gt;
-	  &lt;label&gt; text &lt;span class=&quot;error&quot;&gt;&lt;/span&gt; &lt;input type=&quot;text&quot; required=&quot;true&quot;/&gt; &lt;span&gt;Tested&lt;/span&gt;&lt;/label&gt;
-	  &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.js&quot;&gt;&lt;/script&gt;
+&lt;form&gt;
+&lt;label&gt; field text 
+   &lt;span class=&quot;error&quot;&gt;&lt;/span&gt; 
+   &lt;input type=&quot;text&quot; required=&quot;true&quot; value=&quot;&quot;/&gt; 
+&lt;/label&gt;
+&lt;label&gt; number 
+  &lt;span class=&quot;error&quot;&gt;&lt;/span&gt; 
+  &lt;input type=&quot;number&quot; required=&quot;true&quot;/&gt; 
+&lt;/label&gt;
+&lt;label&gt; url 
+  &lt;span class=&quot;error&quot;&gt;&lt;/span&gt; 
+  &lt;input type=&quot;url&quot; required=&quot;true&quot;/&gt; 
+&lt;/label&gt;
+&lt;input type=&quot;submit&quot; value=&quot;submit&quot;&gt;
+&lt;input type=&quot;reset&quot; value=&quot;reset&quot;&gt;
+&lt;/form&gt;
 
-	  &lt;script src=&quot;checkValidity.js&quot;&gt;&lt;/script&gt;
-	  &lt;script&gt;
-	  $(document).ready(function(){$(&apos;form, :input&apos;).checkValidity().checkValidity(&apos;trigger&apos;);});
-	  &lt;/script&gt;
+ &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.js&quot;&gt;&lt;/script&gt;
+ &lt;script src=&quot;checkValidity.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+$(document).ready(function(){
+  $(&apos;form, :input&apos;).checkValidity().checkValidity(&apos;validate&apos;);
+});
+&lt;/script&gt;
       </textarea>	
+</p>
+
+<p>
+You can overide the default behavior by calling checkValidity with your own options. Note how the input element's class is not changed if the default handlers are overridden in the example below.
+</p>
+<p class='eg'>
+      <textarea class="eg">
+	&lt;style&gt;
+input.invalid, textarea.invalid {
+  background-image: url(&quot;images/cross.png&quot;);
+}
+input.valid, textarea.valid {
+  background-image: url(images/accept.png);
+}
+input, textarea {
+  background-position: right top;
+  background-repeat: no-repeat;
+}
+
+label, input, textarea {display:block}
+label {margin-bottom: 5px;}
+
+.error {color: red}
+	&lt;/style&gt;
+&lt;form&gt;
+&lt;label&gt; field text 
+   &lt;span class=&quot;error&quot;&gt;&lt;/span&gt; 
+   &lt;input type=&quot;text&quot; required=&quot;true&quot; value=&quot;&quot;/&gt; 
+&lt;/label&gt;
+&lt;label&gt; number 
+  &lt;span class=&quot;error&quot;&gt;&lt;/span&gt; 
+  &lt;input type=&quot;number&quot; required=&quot;true&quot;/&gt; 
+&lt;/label&gt;
+&lt;label&gt; url 
+  &lt;span class=&quot;error&quot;&gt;&lt;/span&gt; 
+  &lt;input type=&quot;url&quot; required=&quot;true&quot;/&gt; 
+&lt;/label&gt;
+&lt;input type=&quot;submit&quot; value=&quot;submit&quot;&gt;
+&lt;input type=&quot;reset&quot; value=&quot;reset&quot;&gt;
+&lt;/form&gt;
+
+ &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.js&quot;&gt;&lt;/script&gt;
+ &lt;script src=&quot;checkValidity.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+$(document).ready(function(){
+  function report(el, str){
+    var nodeName = el.nodeName, type = nodeName == &apos;INPUT&apos;? el.getAttribute(&apos;type&apos;): &apos;&apos;;
+    alert(nodeName + (type? &apos;[&apos;+type+&apos;]&apos;: &apos;&apos;) + &apos; &apos; + str);
+  }; 
+  var opts = {
+    reset: function(){report(this, &apos;reset&apos;); }, 
+    valid: function(){report(this, &apos;valid&apos;); return false; },
+    invalid: function(){report(this, &apos;invalid&apos;); return false; }
+  };    
+  $(&apos;form, :input&apos;).checkValidity(opts);
+});
+&lt;/script&gt;
+      </textarea>	
+</p>
+    </article>
+    <article>
+      <h1>options</h1>
+<p>
+CheckValidity accepts the following options.
+<dl>
+  <dt>live: boolean</dt>
+  <dd>If this is true, events will be attached using .live. Default is true.</dd>
+  <dt>validateEvents: string</dt>
+  <dd>Defines which events will trigger validity checks. Default is 'change submit'.</dd>
+  <dt>resetEvents: string</dt>
+  <dd>Defines which events will trigger validity checks. Default is 'reset'.</dd>
+  <dt>valid: function</dt>
+  <dd>Specifies which function will be called on valid events. By default, the default all the validity event handlers (for valid, invalid, and reset) set classes on the element and its labels while removing non-corresponding classes. Also, they set the html of any elements classed 'error' in the label with the validation message.
+  </dd>
+  <dt>invalid, reset: functions</dt>
+  <dd>See valid above.</dd>
+  <dt>errorClass: string</dt>
+  <dd>Specifies which class will receive the validation message on validation failures. See valid above. Default is 'error'.</dd>
+  <dt>setCustomError: function ( value, el, errorMessage ){ . . . }</dt>
+  <dd>After an element is validated, its <a href="http://www.w3.org/TR/html5/association-of-controls-and-forms.html#dom-cva-validity">validity</a> properties are set and setCustomError is called on its value, also passed are the element itself and the errorMessage object. The element's <a href="http://www.w3.org/TR/html5/association-of-controls-and-forms.html#dom-cva-validationmessage">validationMessage</a> is set to the value returned. By default, the customError function concatenates the error strings in the errorMessage object which correspond to the true properties of the element's validity attribute. So, for example, if the element's value is too long and doesn't match the pattern, the validity object will be {tooLong: true, patternMismatch: true, . . . } and the validationMessage will be set to "Too Long. Bad format." by default.</dd>
+  <dt>errorMessage: generally object mapping string to string. But see errorMessage.typeMismatch.</dt>
+  <dd>ErrorMessage maps the keys of the <a href="http://www.w3.org/TR/html5/association-of-controls-and-forms.html#dom-cva-validity">validity</a> object to error messages. By default, errorMessage = <pre>{ 
+valueMissing: "Required.", 
+patternMismatch: 'Bad format.', 
+rangeOverflow: 'Too big.', 
+rangeUnderflow: 'Too small.', 
+stepMismatch: 'Step mismatch.', 
+tooLong: 'Too long.', 
+tooShort: 'Too short.', 
+typeMismatch: { . . . }
+}</pre>
+  </dd>
+  <dt>errorMessage.typeMismatch: object mapping string to string.</dt>
+  <dd>errorMessage.typeMismatch maps an element's type to an error message. By default errormessage.typeMismatch = <pre>{ 
+default: 'Type mismatch.', 
+email: 'Not a recognized email.', 
+url: 'Not a recognized url.', 
+number: 'Not a recognized number.', 
+date: 'Not a recognized date.', 
+time: 'Not a recognized time.', 
+datetime: 'Not a recognized datetime.', 
+datetimelocal: 'Not a recognized local datetime.', 
+week: 'Not a recognized week.', 
+month: 'Not a recognized month.', 
+visa: 'Not a valid Visa number.', 
+mastercard: 'Not a valid Mastercard number.', 
+creditcard: 'Not a valid credit card number.' 
+}</pre>
+  </dd>
+  <dt>typeCheck: object mapping string to function(valueString){ . . .}</dt>
+  <dd>TypeCheck holds the functions used to verify an input element's type. By default, typeCheck = <pre>
+	    default: function (v){return true;},
+	    email: function (v){
+		var email_regex = . . . 
+		return email_regex.test(v);
+	    },
+	    url: function(v){
+		url_regex: . . . 
+		return url_regex.test(v);
+	    },
+	    number: function(x){return !isNaN(x);},
+	    date: function(x){return !isNaN(Date.parse(x));},
+	    time: Date.setISO8601,
+	    datetime: Date.setISO8601,
+	    datetimelocal: Date.setISO8601,
+	    week: Date.setISO8601,
+	    month: Date.setISO8601,
+	    creditcard: function (v) {return creditcard(v);}
+	    }</pre> (But see the source for the most recent value. This documentation may not be updated.)
+  </dd>
+  <dt>toType: object mapping string to function(v) { . . . }</dt>
+  <dd>The object toType holds the function used to convert a string to a value. By default, toType = <pre> {
+	    default: function (v){return v;},
+	    number: function(x){return parseFloat(x);},
+	    date: Date.parse,
+	    time: Date.setISO8601,
+	    datetime: Date.parse,
+	    datetimelocal: Date.parse,
+	    week: Date.setISO8601,
+	    month: Date.setISO8601
+	    }</pre>
+  </dd>
+  <dt>stepCheck: object mapping string to function(v, min, step, max)</dt>
+  <dd>Returns a value which tests true if there is a step error. By default, stepCheck = <pre>{
+	    default: function (v, min, step, max){
+		step = parseFloat(step);
+		return ((min != undefined)? ((min + v) % step == 0): (max != undefined)? ((max - v) % step == 0): v % step == 0)? '': 'Value is out of step.';
+	    },
+	    number: function (v, min, step, max){
+		step = parseFloat(step);
+		return (min != undefined)? (((min + v) % step == 0)? '': ('Value needs to be a whole multiple of '+step+' from a minimum of '+min+'.')):
+		    (max != undefined)? (((max - v) % step == 0)? '': ('Value needs to be a whole multiple of '+step+' from a maximum of '+max+'.')):
+		    (v % step == 0)? '': ('Value needs to be a multiple of '+step+'.');
+	    },
+	    date: stepCheckDate, 
+	    time: stepCheckDate,
+	    datetime: stepCheckDate, 
+	    datetimelocal: stepCheckDate,
+	    week: function (v, min, step, max){
+		step = parseFloat(x) * 604800000;
+		var base = min!=undefined? min: max!=undefined? max: 1;
+		base = base.getTime? base.getTime(): parseFloat(base);
+		return (base+v.getTime())%step? 'Value not in correct increment.': '';
+	    },
+	    month: function (v, min, step, max){
+		step = parseFloat(x);
+		var base = min!=undefined? min: max!=undefined? max: 0;
+		return (base - v).getMonth()%step? 'Value not in correct increment.': '';
+	    }
+	    }</pre>
+  </dd>
+</dl>
+</p>
+    </article>
+    <article>
+      <h1>checkvalidity(methodname[, . . .]) <span class="returns">Returns: <a href="http://docs.jquery.com/Types#jQuery">jQuery</a></span></h1>
+
+<p>
+Checkvalidity may be called with a method name. The following method names are available: 'init', 'validate', 'reset', and 'destroy'.
+</p>
+    </article>
+    <article>
+      <h1>checkvalidity('validate') <span class="returns">Returns: <a href="http://docs.jquery.com/Types#jQuery">jQuery</a></span></h1>
+
+<p>
+The validate method validates the elements in the jQuery object. This will result in the triggering of 'valid' or 'invalid' events.
+</p>
+    </article>
+    <article>
+      <h1>checkvalidity(reset, [handler]) <span class="returns">Returns: <a href="http://docs.jquery.com/Types#jQuery">jQuery</a></span></h1>
+<p>
+Called without the handler argument, the reset method calls the reset callback on the objects in the jQuery object. Called with a handler, the reset method assigns the reset callback of the elements in the jQuery object. 
+</p>
     </article>
   </body>
 </html>

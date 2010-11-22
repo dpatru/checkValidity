@@ -81,6 +81,7 @@ if (!('setISO8601' in Date))
 	 return re.test(v);
      };
      function defaultHandlerf(options){
+	 // produces a handler function for valid, invalid, and reset events.
 	 var defaultOpts = {validationMessage:undefined, preventDefault: false, addClass: '', removeClass: ''};
 	 var opts = $.extend({}, defaultOpts, options || {});
 	 return function(ev){
@@ -212,13 +213,17 @@ if (!('setISO8601' in Date))
 	     if (options) this.data('checkValidity', options); // set options
  	     var opts = $.extend({}, defaultOptions, options||{});
 	     var validateEvents = $.map(opts.validateEvents.split(/\s+/), function(e){return e+'.checkValidity';}).join(' ');
-	     var resetEvents = $.map(opts.resetEvents.split(/\s+/), function(e){return e+'.checkValidity';}).join(' ');
+	     var resetEvents = $.map(opts.resetEvents.trim().split(/\s+/), function(e){return e+'.checkValidity';}).join(' ');
+
+	     if (options) console.log ('options.validateEvents = '+options.validateEvents);
+	     console.log ('validateEvents = '+validateEvents);
+
 	     var m = opts.live? 'live': 'bind';
 	     // This is the main call. Note that there are two events being bound:  
 	     // 1) the events which trigger a validity check, and 
 	     // 2) the invalid/valid events are bound to the handler specifid in the options
-	     this[m](validateEvents, function(){return checkValidity.validate.call(this);});
-	     this[m](resetEvents, function(){return checkValidity.reset.call(this);});
+	     this[m](validateEvents, checkValidity.validate);
+	     this[m](resetEvents, checkValidity.reset);
 	     this[m]('valid.checkValidity', opts.valid);
 	     this[m]('invalid.checkValidity', opts.invalid);
 	     this[m]('reset.checkValidity', opts.reset);
@@ -277,6 +282,8 @@ if (!('setISO8601' in Date))
      }; // end inputElementWillValidate
 
      checkValidity.reset = function reset(cb){
+	 var event = cb instanceof $.Event? cb: undefined;
+	 if (event) cb = null;
          var el = this;
 	 var me = arguments.callee;
 	 switch (el.nodeName.toLowerCase()){
@@ -289,7 +296,7 @@ if (!('setISO8601' in Date))
 		 el.data('checkValidity', $.extend(el.data('checkValidity') || {}, {reset: cb}));
 	     } else {
 		 var opts = $.extend({}, checkValidity.defaultOptions, $(el).data('checkValidity') || {});
-		 return opts.reset.call(this);
+		 return opts.reset.call(this, event);
 	     }
 	 }
 	 return false;
@@ -300,17 +307,20 @@ if (!('setISO8601' in Date))
 	 $(el).trigger(v? 'valid': 'invalid');
      };
      
-     checkValidity.validate = function validate(){
+     checkValidity.validate = function validate(event){
+	 console.log(event);
 	 var el = this;
 	 var me = arguments.callee;
 	 switch (el.nodeName.toLowerCase()){
 	 case 'form': 
+	     console.log('validating form');
 	     var r=true;
 	     $.each(el.elements, function(i, x){r &= me.call(x);});
 	     trigger_event(el, r);
 	     break;
 	 case 'input':
 	 case 'textarea':
+	     console.log('validating input');
 	     if (!el.validity) el.validity = {};
 	     if (!el.setCustomValidity) el.setCustomValidity = function(msg){
 		 el.validationMessage = msg;
@@ -331,7 +341,7 @@ if (!('setISO8601' in Date))
 	     break;
 	 default: r = true; break;
 	 }
-	 //alert('returning validation of '+el.nodeName+' = '+!!r);
+	 //console.log('returning validation of '+el.nodeName+' = '+!!r);
 	 return !!r;
      };
 

@@ -8,6 +8,7 @@
     <script>!window.jQuery && document.write(unescape('%3Cscript src="jquery.js"%3E%3C/script%3E'))</script>
 
   <script src='checkValidity.js'></script>
+  <script src='codemirror/js/codemirror.js'></script>
     <script src='http://dpatru.github.com/lazydoc/lazydoc.js'></script>
     <script>$(document).ready(function(){$('textarea.eg').lazydoc();});</script>
   </head>
@@ -59,7 +60,8 @@ label {margin-bottom: 5px;}
  &lt;script src=&quot;checkValidity.js&quot;&gt;&lt;/script&gt;
 &lt;script&gt;
 $(document).ready(function(){
-  $(&apos;form, :input&apos;).checkValidity().checkValidity(&apos;validate&apos;);
+  $('form').checkValidity({validateEvents: 'submit'});
+  $('input:not([type=submit])').checkValidity({validateEvents: 'change'});
 });
 &lt;/script&gt;
       </textarea>	
@@ -116,7 +118,8 @@ $(document).ready(function(){
   var opts = {
     reset: function(){report(this, &apos;reset&apos;); }, 
     valid: function(){report(this, &apos;valid&apos;); return false; },
-    invalid: function(){report(this, &apos;invalid&apos;); return false; }
+    invalid: function(){report(this, &apos;invalid&apos;); return false; },
+    validateEvents: &apos;submit&apos;
   };    
   $(&apos;form, :input&apos;).checkValidity(opts);
 });

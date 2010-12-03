@@ -108,7 +108,7 @@ if (!('setISO8601' in Date))
 	resetEvents: 'reset', /* events that trigger resets */
 	valid: defaultHandlerf({addClass: 'valid', removeClass: 'invalid reset', preventDefault: false}),
 	invalid: defaultHandlerf({addClass: 'invalid', removeClass: 'valid reset', preventDefault: true}),
-	reset: defaultHandlerf({addClass: 'reset', removeClass: 'valid invalid', preventDefault: false}),
+	reset: defaultHandlerf({addClass: 'reset', removeClass: 'valid invalid', preventDefault: false, validationMessage: ''}),
 	errorClass: 'error',
 	setCustomError: function (value, el, errorMessages){
 	  var errs = [], k, validity = el.validity;
@@ -215,8 +215,8 @@ if (!('setISO8601' in Date))
 	     var validateEvents = $.map(opts.validateEvents.split(/\s+/), function(e){return e+'.checkValidity';}).join(' ');
 	     var resetEvents = $.map(opts.resetEvents.trim().split(/\s+/), function(e){return e+'.checkValidity';}).join(' ');
 
-	     if (options) console.log ('options.validateEvents = '+options.validateEvents);
-	     console.log ('validateEvents = '+validateEvents);
+	     //if (options) console.log ('options.validateEvents = '+options.validateEvents);
+	     //console.log ('validateEvents = '+validateEvents);
 
 	     var m = opts.live? 'live': 'bind';
 	     // This is the main call. Note that there are two events being bound:  
@@ -308,19 +308,19 @@ if (!('setISO8601' in Date))
      };
      
      checkValidity.validate = function validate(event){
-	 console.log(event);
+	 //console.log(event);
 	 var el = this;
 	 var me = arguments.callee;
 	 switch (el.nodeName.toLowerCase()){
 	 case 'form': 
-	     console.log('validating form');
+	     //console.log('validating form');
 	     var r=true;
 	     $.each(el.elements, function(i, x){r &= me.call(x);});
 	     trigger_event(el, r);
 	     break;
 	 case 'input':
 	 case 'textarea':
-	     console.log('validating input');
+	     //console.log('validating input');
 	     if (!el.validity) el.validity = {};
 	     if (!el.setCustomValidity) el.setCustomValidity = function(msg){
 		 el.validationMessage = msg;

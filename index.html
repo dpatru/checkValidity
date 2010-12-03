@@ -60,8 +60,13 @@ label {margin-bottom: 5px;}
  &lt;script src=&quot;checkValidity.js&quot;&gt;&lt;/script&gt;
 &lt;script&gt;
 $(document).ready(function(){
-  $('form').checkValidity({validateEvents: 'submit'});
-  $('input:not([type=submit])').checkValidity({validateEvents: 'change'});
+  $(&apos;form&apos;).checkValidity({
+      validateEvents: &apos;submit&apos;, 
+      reset: function(){
+        $(&apos;textarea, input&apos;, this).reset();
+      }
+  });
+  $(&apos;input:not([type=submit])&apos;).checkValidity({validateEvents: &apos;change&apos;});
 });
 &lt;/script&gt;
       </textarea>	
